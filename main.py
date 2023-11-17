@@ -19,7 +19,7 @@ ligas_y_clubes = {
     "La liga" : ["Athletic Club", "Atletico De Madrid", "CA Osazuna", "Cadiz CF", "Deportivo Alaves", "FC Barcelona", "Getafe CF", "Girona FC", "Granada CF", "Rayo Vallecano", "RC Celta", "Real Betis", "Real Madrid", "Real Sociedad", "Sevilla FC", "UD Almeria", "Valencia CF", "Villareal CF"],
     "Serie A" : ["Atalanta", "Bologna", "Cagliari", "Empoli F.C", "Fiorentina", "Frosinone", "Genoa", "Internazionale", "Juventus", "Lazio", "Lecce", "Milan","Monza","Napoli","Roma","U.S Salernitana 1919","Sassuolo","Torino","Udinese","Verona"],
     "Liga Brasilera" : ["Botafogo","Palmeiras","Grêmio","Flamengo","Bragatino","Fluminense","Atletico PR", "Fortaleza EC", "Atletico MG", "Cuiaba", "Cruzeiro", "Internacional", "São Paulo", "Corinthians", "Bahia", "Goias", " Santos", "Vasco Da Gamma", "America MG", "Coritiba"],
-    "Liga Argentina" : ["River Plate", "Talleres (Cordoba)", "San Lorenzo", "Lanus", "Estudiantes De La Plata", "Defensa Y Justicia", "Boca Juniors", "Rosario Central", "Godoy Cruz", "Argentino Juniors", "Atletico Tucuman", "Racing Club", "Belgrano (Cordoba)", "Newell's Old Boys", "Barracas Central", "Tigre", "Instituto (Cordoba)", "Sarmiento (Junin)", "Union (Santa Fe)", "Banfield", "Gimnasia De La Plata", "Central Cordoba (Santiago Del Estero)", "Independiente", "Velez Sarsfield", "Huracan", "Colon (Santa Fe)", "Arsenal Sarandi"]
+    "Liga Argentina" : ["River Plate", "Talleres (Cordoba)", "San Lorenzo", "Lanus", "Estudiantes De La Plata", "Defensa Y Justicia", "Boca Juniors", "Rosario Central", "Godoy Cruz", "Argentinos Juniors", "Atletico Tucuman", "Racing Club", "Belgrano (Cordoba)", "Newells Old Boys", "Barracas Central", "Tigre", "Instituto (Cordoba)", "Sarmiento (Junin)", "Union (Santa Fe)", "Banfield", "Gimnasia De La Plata", "Central Cordoba (Santiago Del Estero)", "Independiente", "Velez Sarsfield", "Huracan", "Colon (Santa Fe)", "Arsenal Sarandi"]
 }
 
 
@@ -38,12 +38,11 @@ def seleccionar_club_random():
         mostrar_mensaje_final()
         return
 
-    club_elegido = clubes.pop()
+    club_elegido = random.choice(clubes)
+    clubes.remove(club_elegido)
     
     if len(clubes) >= 3:
         opciones = [club_elegido] + random.sample(clubes, 3)
-    else:
-        opciones = [club_elegido] + clubes
 
     random.shuffle(opciones)
 
@@ -62,12 +61,6 @@ def seleccionar_club_random():
         escudo_label.image = imagen_escudo
     except FileNotFoundError:
         print(f"Imagen no encontrada para {club_elegido} en la ruta {escudo_path}")
-
-
-
-
-def mostrar_mensaje_final():
-    mensaje_label.config(text="Juego terminado. Puntaje total: {}".format(puntaje_total))
 
 def verificar_respuesta(respuesta):
     global puntaje_total, vidas, opciones, club_elegido
@@ -105,6 +98,12 @@ def ocultar_resultado():
 
 def mostrar_puntaje_final():
     mensaje_label.config(text="Juego terminado. Puntaje total: {}".format(puntaje_total))
+    
+
+def mostrar_mensaje_final():
+    mensaje_label.config(text="Has visto todos los escudos de esta liga. Puntaje total: {}".format(puntaje_total))
+    for boton in botones_respuesta:
+        boton.config(state=tk.DISABLED)
 
 etiqueta_liga = tk.Label(ventana, text="Selecciona una liga:")
 etiqueta_liga.pack()
